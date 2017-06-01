@@ -81,7 +81,12 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
         button.setOnClickListener(new Button.OnClickListener() {
 
             public void onClick(View view) {
+
                 String searchString = searchField.getText().toString();
+
+                if (searchString == null){
+                    emptyStateTextView.setText(R.string.enter_search_query);
+                }
                 searchQuery = searchString.trim();
 
                 emptyStateTextView.setText("");
@@ -113,7 +118,8 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
 
     @Override
     public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
-        return new BookLoader(this, request + searchQuery);
+
+        return new BookLoader(this, request, searchQuery);
     }
 
     @Override

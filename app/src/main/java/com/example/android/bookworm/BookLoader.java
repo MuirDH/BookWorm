@@ -18,15 +18,19 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
     // Query URL
     private String Url;
 
+    // Search Query String
+    private String SearchQuery;
+
     /**
      * Constructs a new {@link BookLoader}
      *
      * @param context of the activity
      * @param url     to load data from
      */
-    public BookLoader(Context context, String url) {
+    public BookLoader(Context context, String url, String searchQuery) {
         super(context);
         Url = url;
+        SearchQuery = searchQuery;
     }
 
     @Override
@@ -40,11 +44,11 @@ public class BookLoader extends AsyncTaskLoader<List<Book>> {
     public List<Book> loadInBackground() {
         Log.i(LOG_TAG, "TEST: loadInBackground() called...");
 
-        if (Url == null)
+        if (Url == null || SearchQuery == null)
             return null;
 
         // Perform the network request, parse the response, and extract a list of books.
-        List<Book> listOfBooks = QueryUtils.fetchBookData(Url);
+        List<Book> listOfBooks = QueryUtils.fetchBookData(Url + SearchQuery);
         return listOfBooks;
     }
 }
