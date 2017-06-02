@@ -139,8 +139,8 @@ public final class QueryUtils {
              */
             JSONArray bookArray = baseJsonResponse.getJSONArray(KEY_ITEMS);
 
-            /**
-             * for each book in the bookArray, create an {@link Book} object.
+            /*
+              for each book in the bookArray, create an {@link Book} object.
              */
             for (int i = 0; i < bookArray.length(); i++) {
 
@@ -173,9 +173,9 @@ public final class QueryUtils {
                     authors = authorsArray.toString().replace("[", "").replace("]", "");
                 }
 
-                /**
-                 * Create a new {@link Book} object with the title, subtitle, author
-                 * from the JSON response.
+                /*
+                  Create a new {@link Book} object with the title, subtitle, author
+                  from the JSON response.
                  */
                 Book book = new Book(title, subtitle, authors);
 
@@ -226,12 +226,12 @@ public final class QueryUtils {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        /**
-         * Extract relevant fields from the JSON response and create a list of {@link Book}s.
+        /*
+          Extract relevant fields from the JSON response and create a list of {@link Book}s.
          */
 
-        /**
-         * Return the list of {@link Book}s.
+        /*
+          Return the list of {@link Book}s.
          */
         return extractFeatureFromJson(jsonResponse);
     }

@@ -1,6 +1,7 @@
 package com.example.android.bookworm;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +40,9 @@ public class BookAdapter extends ArrayAdapter<Book> {
      * in the list of books.
      */
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
         // Get the data item for this position
         Book currentBook = getItem(position);
@@ -64,9 +66,15 @@ public class BookAdapter extends ArrayAdapter<Book> {
             viewHolder = (ViewHolder) convertView.getTag();
 
         // Populate the data into the template view using the data object
-        viewHolder.title.setText(currentBook.getTitle());
-        viewHolder.subtitle.setText(currentBook.getSubtitle());
-        viewHolder.author.setText(currentBook.getAuthor());
+        if (currentBook != null) {
+            viewHolder.title.setText(currentBook.getTitle());
+        }
+        if (currentBook != null) {
+            viewHolder.subtitle.setText(currentBook.getSubtitle());
+        }
+        if (currentBook != null) {
+            viewHolder.author.setText(currentBook.getAuthor());
+        }
 
         // Return the completed view to render on screen
         return convertView;

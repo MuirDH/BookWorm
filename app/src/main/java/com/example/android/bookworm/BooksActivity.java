@@ -59,8 +59,8 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
         // Create a new adapter that takes an empty list of books as input
         Adapter = new BookAdapter(this, new ArrayList<Book>());
 
-        /**
-         * Set the adapter on the {@link ListView} so the list can be populated in the UI
+        /*
+          Set the adapter on the {@link ListView} so the list can be populated in the UI
          */
         booksListView.setAdapter(Adapter);
 
@@ -132,9 +132,9 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
         // clear the adapter of previous books data
         Adapter.clear();
 
-        /**
-         * If there is a valid list of {@link listOfBooks}, then add them to the adapter's data set.
-         * this will trigger the ListView to update.
+        /*
+          If there is a valid list of {@link listOfBooks}, then add them to the adapter's data set.
+          this will trigger the ListView to update.
          */
         if (listOfBooks != null && !listOfBooks.isEmpty()) {
             Adapter.addAll(listOfBooks);
