@@ -34,7 +34,7 @@ public final class QueryUtils {
     private static final String KEY_TITLE = "title";
     private static final String KEY_SUBTITLE = "subtitle";
     private static final String KEY_AUTHORS = "authors";
-    
+
 
     // Returns new URL object from the given string URL
     private static URL createUrl(String stringUrl) {
@@ -159,6 +159,7 @@ public final class QueryUtils {
                     title = volumeInfo.getString(KEY_TITLE);
                 }
 
+
                 // Extract "subtitle" under "volumeInfo" for subtitle
                 String subtitle = "";
                 if (volumeInfo.has(KEY_SUBTITLE))
@@ -190,6 +191,7 @@ public final class QueryUtils {
              * message from the exception.
              */
             Log.e("QueryUtils", "Problem parsing the book JSON results", e);
+
         }
 
         // Return the list of books

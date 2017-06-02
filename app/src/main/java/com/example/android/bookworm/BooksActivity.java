@@ -21,7 +21,8 @@ import static com.example.android.bookworm.QueryUtils.LOG_TAG;
 
 public class BooksActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>> {
 
-    private String request = "https://www.googleapis.com/books/v1/volumes?q=";
+    // Declare base url as a constant
+    private static final String BASE_URL = "https://www.googleapis.com/books/v1/volumes?q=";
 
     //Adapter for the list of books
     private BookAdapter Adapter;
@@ -84,9 +85,6 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
 
                 String searchString = searchField.getText().toString();
 
-                if (searchString == null){
-                    emptyStateTextView.setText(R.string.enter_search_query);
-                }
                 searchQuery = searchString.trim();
 
                 emptyStateTextView.setText("");
@@ -108,6 +106,9 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
                     // display error. First, hide loading indicator so error message will be visible
                     loadingProgressSpinner.setVisibility(View.GONE);
 
+                    // clear the adapter so user can tell if connectivity is lost between searches
+                    Adapter.clear();
+
                     // Update empty state with no connection error message
                     emptyStateTextView.setText(R.string.no_internet_connection);
                 }
@@ -119,7 +120,7 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
     @Override
     public Loader<List<Book>> onCreateLoader(int id, Bundle args) {
 
-        return new BookLoader(this, request, searchQuery);
+        return new BookLoader(this, BASE_URL, searchQuery);
     }
 
     @Override
