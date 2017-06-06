@@ -1,11 +1,15 @@
 package com.example.android.bookworm;
 
 import android.app.LoaderManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,6 +120,21 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
             }
         });
 
+        /*
+         * Register to receive messages. We are registering an observer (MessageReceiver) to
+         * receive Intents with actions named "parsing-error".
+         */
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(MessageReceiver,
+                new IntentFilter("parsing-error"));
+
+    }
+
+    @Override
+    protected void onDestroy(){
+        // Unregister since the activity is about to be closed
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(MessageReceiver);
+        super.onDestroy();
     }
 
     @Override
@@ -147,5 +167,19 @@ public class BooksActivity extends AppCompatActivity implements LoaderManager.Lo
         // Loader reset, so we can clear out our existing data
         Adapter.clear();
     }
+
+    /*
+     * Our handler for received Intents. This will be called whenever an Intent with an action
+     * named "parsing-error" is broadcasted.
+     */
+
+    private BroadcastReceiver MessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // Get extra data included in the Intent
+            String message = intent.getStringExtra("message");
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        }
+    };
 
 }

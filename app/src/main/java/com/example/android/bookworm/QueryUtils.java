@@ -1,5 +1,8 @@
 package com.example.android.bookworm;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -27,6 +30,8 @@ public final class QueryUtils {
 
     // Tag for the log messages
     public static final String LOG_TAG = QueryUtils.class.getSimpleName();
+
+    private static Context context;
 
     // Constant keys
     private static final String KEY_ITEMS = "items";
@@ -157,13 +162,15 @@ public final class QueryUtils {
                 String title = "";
                 if (volumeInfo.has(KEY_TITLE)) {
                     title = volumeInfo.getString(KEY_TITLE);
-                }
-
+                }else
+                    sendTitleMessage();
 
                 // Extract "subtitle" under "volumeInfo" for subtitle
                 String subtitle = "";
-                if (volumeInfo.has(KEY_SUBTITLE))
+                if (volumeInfo.has(KEY_SUBTITLE)){
                     subtitle = volumeInfo.getString(KEY_SUBTITLE);
+                }else
+                    sendSubtitleMessage();
 
 
                 // Extract "authors" under "volumeInfo" for author
@@ -171,7 +178,8 @@ public final class QueryUtils {
                 if (volumeInfo.has(KEY_AUTHORS)) {
                     JSONArray authorsArray = volumeInfo.getJSONArray(KEY_AUTHORS);
                     authors = authorsArray.toString().replace("[", "").replace("]", "");
-                }
+                }else
+                    sendAuthorsMessage();
 
                 /*
                   Create a new {@link Book} object with the title, subtitle, author
@@ -191,6 +199,8 @@ public final class QueryUtils {
              * message from the exception.
              */
             Log.e("QueryUtils", "Problem parsing the book JSON results", e);
+
+
 
         }
 
@@ -234,6 +244,41 @@ public final class QueryUtils {
           Return the list of {@link Book}s.
          */
         return extractFeatureFromJson(jsonResponse);
+    }
+
+    public static void init(Context context){
+        QueryUtils.context = context;
+    }
+    /*
+     * Send an Intent with an action named "parsing-error". The intent sent should be received by
+     * the Receiver Activity (in this case, BooksActivity)
+     */
+
+    private static void sendTitleMessage(){
+
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("parsing-error");
+        intent.putExtra("message", "Could not display book title. Possible that field does not exist");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+    }
+
+    private static void sendSubtitleMessage(){
+
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("parsing-error");
+        intent.putExtra("message", "Could not display book subtitle. Possible that field does not exist");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
+    }
+
+    private static void sendAuthorsMessage(){
+
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("parsing-error");
+        intent.putExtra("message", "Could not display book authors. Possible that field does not exist");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+
     }
 
 }
